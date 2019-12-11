@@ -1,26 +1,77 @@
-import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import React, {useEffect} from "react";
+import { makeStyles } from '@material-ui/core/styles';
+import Container from '@material-ui/core/Container';
+import LandingPage from './components/LandingPage';
+import StationList from './components/StationList';
+import SongList from './components/SongList';
+import TokenService from './models/TokenService';
+import {getArtistsByLocationAndGenre} from './apis/artists.api'
+import { play } from './apis/songs.api';
+import { hash } from './utils/Constants';
+import {
+  BrowserRouter as Router,
+  Switch,
+  Route
+} from "react-router-dom";
 
-function App() {
+const useStyles = makeStyles(theme => ({
+  root: {
+    padding: theme.spacing(3, 2),
+    height: "100vh",
+    overflowY: "auto",
+    textAlign: "center",
+    background: "#7CB4B8",
+    width: '40%'
+  },
+}));
+
+const App = (props) => {
+  const classes = useStyles();
+
+  const handleStationClick = (genre) => {
+    getArtistsByLocationAndGenre(genre);
+  }
+
+  useEffect(() => {
+    let token = hash.access_token;
+
+    if (token) {
+      TokenService.set(token);
+      window.token = token
+    }
+
+  }, []);
+
+  const playSong = (song) => {
+    play(
+      {
+        playerInstance: window.player,
+        spotify_uri: song.uri,
+      }
+    )
+  }
+
+
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+    <Container fixed className={`${classes.root} App`}>
+      <Router>
+        <Switch>
+          <Route exact path="/">
+            <LandingPage />
+          </Route>
+          <Route path="/stations">
+            <StationList
+              handleStationClick={handleStationClick}
+            />
+          </Route>
+          <Route path="/songs">
+            <SongList
+              playSong={playSong}
+            />
+          </Route>
+        </Switch>
+      </Router>
+    </Container>
   );
 }
-
 export default App;
