@@ -1,28 +1,47 @@
-import _ from 'lodash';
+import _ from "lodash";
 
-const generateId = () => {
-  const randomId = Math.random().toString(36).substring(6);
+const storeEvents = (event, artists, venues) => {
+  const id = event.artist_id;
+  const newEvent = parseArtist(event, artists, venues);
+  const newEvents = JSON.stringify({ ...getEvents(), ...{ [id]: newEvent } });
+  sessionStorage.setItem("events", newEvents);
+};
 
-  if (sessionStorage.getItem(randomId)) {
-    return generateId();
-  } else {
-    return randomId;
-  }
-}
+const parseArtist = (event, artists, venues) => {
+  const newEvent = _.pick(event, [
+    "starts_at",
+    "ticket_available",
+    "ticket_url"
+  ]);
 
-const storeArtist = (artist) => {
-  const id = generateId();
-  artist = JSON.stringify(parseArtist(artist));
-  sessionStorage.setItem(id, artist);
-}
+  const artistVenueData = {
+    artist: getArtistNameById(artists, event.artist_id),
+    venue: getVenueNameById(venues, event.venue_id)
+  };
 
-const parseArtist = (artist) => {
-  return _.pick(artist, ['id', 'name']);
-}
+  return { ...newEvent, ...artistVenueData };
+};
+
+const getArtistNameById = (artists, id) => {
+  const artist = _.find(artists, ["id", id]);
+  return artist.name;
+};
+
+const getVenueNameById = (venues, id) => {
+  const venue = _.find(venues, ["id", id]);
+  return venue.name;
+};
+
+const getEvents = () => JSON.parse(sessionStorage.getItem("events")) || {};
 
 class ArtistService {
-  static addArtists(artists) {
-    artists.forEach(artist => storeArtist(artist));
+  static addArtists(events, artists, venues) {
+    events.forEach(event => storeEvents(event, artists, venues));
+  }
+
+  static getEvent(artist_id) {
+    console.log(getEvents()[artist_id], "artist HELLO");
+    return getEvents()[artist_id];
   }
 }
 

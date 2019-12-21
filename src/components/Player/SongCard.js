@@ -1,17 +1,18 @@
 import React from "react";
-import { makeStyles } from '@material-ui/core/styles';
+import { makeStyles } from "@material-ui/core/styles";
 import Card from "@material-ui/core/Card";
 import CardMedia from "@material-ui/core/CardMedia";
 import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-import { faChevronRight } from '@fortawesome/free-solid-svg-icons'
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
+import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
   card: {
     display: "flex",
     margin: "30px",
-    textAlign: "left",
+    textAlign: "left"
   },
   cover: {
     width: 151
@@ -31,21 +32,13 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
-const SongCard = ({
-  song,
-  index,
-  playSong,
-}) => {
+export const SongCard = ({ song, index, playSong, handleSongDetailsClick }) => {
   const classes = useStyles();
   return (
-    <Card
-      key={index}
-      onClick={() => playSong(song)}
-      className={classes.card}
-    >
+    <Card key={index} onClick={() => playSong(song)} className={classes.card}>
       <CardMedia
         className={classes.cover}
-        image={song.album.images[0].url}
+        image={song.album_url}
         title="song-image"
       />
       <div className={classes.details}>
@@ -54,20 +47,22 @@ const SongCard = ({
             {song.name}
           </Typography>
           <Typography variant="subtitle1" color="textSecondary">
-            {song.artists[0].name}
+            {song.artist}
           </Typography>
         </CardContent>
       </div>
 
-      <div className={classes.nextButton}>
-        <FontAwesomeIcon
-          icon={faChevronRight}
-          onClick={() => console.log("show page")}
-          aria-hidden="true"
-        />
-      </div>
+      <Link
+        to={`/song_details/${song.artist_id}`}
+        onClick={() => handleSongDetailsClick(song)}
+        key={index}
+        song={song}
+      >
+        <div className={classes.nextButton}>
+          <FontAwesomeIcon icon={faChevronRight} aria-hidden="true" />
+        </div>
+      </Link>
     </Card>
-
   );
-}
+};
 export default SongCard;
