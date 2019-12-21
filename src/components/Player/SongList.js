@@ -6,23 +6,35 @@ import { ButtonBar } from "./ButtonBar";
 import SongService from "../../models/SongService";
 import PubSub from "../../models/PubSub";
 import SetterService from "../../models/SetterService";
+import getArtistsByLocationAndGenre from "../../apis/artists.api";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles((theme) => ({
   songTitle: {
-    fontSize: "24px"
+    fontSize: "24px",
   },
   songList: {
-    maxHeight: "500px"
-  }
+    maxHeight: "500px",
+  },
 }));
 
-export const SongList = ({ playSong, handleSongDetailsClick, currentSong }) => {
+export const SongList = ({ playSong, handleSongDetailsClick }) => {
   const classes = useStyles();
 
   const [songs, setSongs] = useState(SongService.getAll());
+  const [currentSong, setCurrentSong] = useState(songs[0]);
 
   useEffect(() => {
+    const start = async () => {
+      await getArtistsByLocationAndGenre();
+    };
+
+    start();
+
     PubSub.subscribe(setSongs);
+
+    setTimeout(() => {
+      playSong(SongService.getAll());
+    }, 5000);
 
     return () => PubSub.unsubscribe(setSongs);
   }, []);
@@ -50,7 +62,7 @@ export const SongList = ({ playSong, handleSongDetailsClick, currentSong }) => {
         />
       ))}
 
-      <ButtonBar currentSong={currentSong} />
+      <ButtonBar currentSong={currentSong} playSong={playSong} />
     </div>
   );
 };

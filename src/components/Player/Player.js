@@ -1,21 +1,20 @@
 import React, { useState, useEffect } from "react";
 import { BrowserRouter as Router, Switch, Route } from "react-router-dom";
 import { LandingPage } from "./LandingPage";
-import { StationList } from "./StationList";
 import { SongList } from "./SongList";
 import { SongDetails } from "./SongDetails";
 import TokenService from "../../models/TokenService";
 import SetterService from "../../models/SetterService";
-import { getArtistsByLocationAndGenre } from "../../apis/artists.api";
+// import { getArtistsByLocationAndGenre } from "../../apis/artists.api";
 import { play } from "../../apis/songs.api";
 import { hash } from "../../utils/Constants";
 
 export const Player = () => {
   const [currentSong, setCurrentSong] = useState({});
 
-  const handleStationClick = genre => {
-    getArtistsByLocationAndGenre(genre);
-  };
+  // const handleStationClick = genre => {
+  //   getArtistsByLocationAndGenre(genre);
+  // };
 
   useEffect(() => {
     const token = hash.access_token;
@@ -26,14 +25,16 @@ export const Player = () => {
     }
   }, []);
 
-  const playSong = song => {
+  const playSong = (song) => {
     play({
       playerInstance: window.player || SetterService.get("player"),
-      spotify_uri: song.uri
+      spotifyURI: song.uri,
     });
+
+    setCurrentSong(song);
   };
 
-  const handleSongDetailsClick = song => {
+  const handleSongDetailsClick = (song) => {
     setCurrentSong(song);
   };
 
@@ -43,10 +44,7 @@ export const Player = () => {
         <Route exact path="/">
           <LandingPage />
         </Route>
-        <Route path="/stations">
-          <StationList handleStationClick={handleStationClick} />
-        </Route>
-        <Route path="/songs">
+        <Route path="/player">
           <SongList
             playSong={playSong}
             handleSongDetailsClick={handleSongDetailsClick}

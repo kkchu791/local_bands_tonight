@@ -3,38 +3,38 @@ import SongService from "../models/SongService";
 import TokenService from "../models/TokenService";
 import SetterService from "../models/SetterService";
 
-const getSongsByArtist = artist => {
+const getSongsByArtist = (artist) => {
   $.ajax({
     url: `https://api.spotify.com/v1/search?q=${artist.name}&type=track&limit=5`,
     type: "GET",
-    beforeSend: xhr => {
+    beforeSend: (xhr) => {
       xhr.setRequestHeader("Authorization", `Bearer ${TokenService.get()}`);
     },
-    success: data => {
+    success: (data) => {
       SongService.addSongs(data.tracks.items, artist.id);
-    }
+    },
   });
 };
 
 const play = ({
   spotifyURI,
   playerInstance: {
-    _options: { getOAuthToken }
-  }
+    _options: { getOAuthToken, id },
+  },
 }) => {
+  console.log(window.deviceId, "device ID");
   getOAuthToken(() => {
     fetch(
-      `https://api.spotify.com/v1/me/player/play?device_id=${SetterService.get(
-        "deviceId"
-      )}`,
+      `https://api.spotify.com/v1/me/player/play?device_id=${window.deviceId
+        || SetterService.get("deviceId")}`,
       {
         method: "PUT",
         body: JSON.stringify({ uris: [spotifyURI] }),
         headers: {
           "Content-Type": "application/json",
-          Authorization: `Bearer ${TokenService.get()}`
-        }
-      }
+          Authorization: `Bearer ${TokenService.get()}`,
+        },
+      },
     );
   });
 };
