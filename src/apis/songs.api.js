@@ -17,20 +17,19 @@ const getSongsByArtist = artist => {
 };
 
 const play = ({
-  spotify_uri,
+  spotifyURI,
   playerInstance: {
-    _options: { getOAuthToken, id }
+    _options: { getOAuthToken }
   }
 }) => {
-  getOAuthToken(access_token => {
-    console.log(TokenService.get(), "token");
+  getOAuthToken(() => {
     fetch(
       `https://api.spotify.com/v1/me/player/play?device_id=${SetterService.get(
         "deviceId"
       )}`,
       {
         method: "PUT",
-        body: JSON.stringify({ uris: [spotify_uri] }),
+        body: JSON.stringify({ uris: [spotifyURI] }),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${TokenService.get()}`

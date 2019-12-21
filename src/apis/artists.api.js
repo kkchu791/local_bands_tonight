@@ -47,8 +47,10 @@ const getArtistsByLocationAndGenre = genre => {
       artists.map(getSongsByArtist);
     })
     .catch(error => {
-      console.log("error", error);
+      return error;
     });
 };
 
 export { getArtistsByLocationAndGenre };
+
+export default getArtistsByLocationAndGenre;

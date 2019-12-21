@@ -3,7 +3,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import Card from "../common/Card";
 import CardSection from "../common/CardSection";
 
-const useStyles = makeStyles(theme => ({
+const useStyles = makeStyles(() => ({
   player: {
     border: "1px solid black",
     width: "87%",
