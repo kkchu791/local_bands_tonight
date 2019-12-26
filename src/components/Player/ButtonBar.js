@@ -45,7 +45,7 @@ export const ButtonBar = ({ currentSong, playSong }) => {
               </div>
 
               <div className="player-actions">
-                <PlayButton currentSong={currentSong} playSong={playSong} />
+                <PlayButton />
               </div>
             </div>
           ) : (

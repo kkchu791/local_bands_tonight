@@ -1,33 +1,41 @@
-export const initializePlayer = (token) => {
-  window.onSpotifyWebPlaybackSDKReady = () => {
-    const player = new window.Spotify.Player({
-      name: 'Web Playback SDK Quick Start Player',
-      getOAuthToken: cb => { cb(token); }
+class PlayerService {
+  // static get player() {
+  //   return this._player || {};
+  // }
+
+  //  static set player() {
+  //   this._player = window.player;
+  // }
+
+  static getPlayer(interval) {
+    return new Promise((resolve, reject) => {
+      setInterval(() => {
+        if (window.deviceId) {
+          clearInterval();
+          resolve(window.player);
+
+        } else {
+          console.log("polling");
+        }
+      }, interval.interval);
     });
+  }
 
-    // Error handling
-    player.addListener('initialization_error', ({ message }) => { console.error(message); });
-    player.addListener('authentication_error', ({ message }) => { console.error(message); });
-    player.addListener('account_error', ({ message }) => { console.error(message); });
-    player.addListener('playback_error', ({ message }) => { console.error(message); });
+  // static playNext() {
+  //   this.player.nextTrack();
+  // }
 
-    // Playback status updates
-    player.addListener('player_state_changed', state => { console.log(state); });
+  // static playPrevious() {
+  //   this.player.previousTrack();
+  // }
 
-    // Ready
-    player.addListener('ready', ({ device_id }) => {
-      console.log('Ready with Device ID', device_id);
-    });
+  // static pause() {
+  //  this.player.pause(); 
+  // }
 
-    // Not Ready
-    player.addListener('not_ready', ({ device_id }) => {
-      console.log('Device ID has gone offline', device_id);
-    });
-
-    // Connect to the player!
-    player.connect();
-
-
-    window.player = player;
-  };
+  // static resume() {
+  //   this.player.resume();
+  // }
 }
+
+export default PlayerService;

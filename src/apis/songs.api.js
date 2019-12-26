@@ -17,7 +17,7 @@ const getSongsByArtist = (artist) => {
 };
 
 const play = ({
-  spotifyURI,
+  spotifyURIs,
   playerInstance: {
     _options: { getOAuthToken, id },
   },
@@ -25,11 +25,10 @@ const play = ({
   console.log(window.deviceId, "device ID");
   getOAuthToken(() => {
     fetch(
-      `https://api.spotify.com/v1/me/player/play?device_id=${window.deviceId
-        || SetterService.get("deviceId")}`,
+      `https://api.spotify.com/v1/me/player/play?device_id=${window.deviceId|| SetterService.get("deviceId")}`,
       {
         method: "PUT",
-        body: JSON.stringify({ uris: [spotifyURI] }),
+        body: JSON.stringify({ uris: spotifyURIs, repeat_mode: 1 }),
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${TokenService.get()}`,

@@ -32,6 +32,10 @@ class SongService {
   static getAll() {
     return _.values(getSongs());
   }
+
+  static getAllURIs() {
+    return this.getAll().map(song => song.uri)
+  }
 }
 
 export default SongService;

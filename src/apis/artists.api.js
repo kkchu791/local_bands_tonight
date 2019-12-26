@@ -11,7 +11,7 @@ const getArtistsByLocationAndGenre = () => {
       "Content-Type": "application/json",
       "x-api-key": bandsInTownApiKey,
       "Access-Control-Allow-Origin": "*",
-      "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT",
+      "Access-Control-Allow-Methods": "POST, GET, OPTIONS, DELETE, PUT"
     },
     params: {
       query: {
@@ -19,23 +19,23 @@ const getArtistsByLocationAndGenre = () => {
           {
             type: "event",
             order: "rsvps (desc)",
-            limit: 5,
-          },
+            limit: 5
+          }
         ],
         location: "region",
         region: {
           latitude: 34.0522,
           longitude: -118.2437,
-          radius: 20,
+          radius: 20
         },
         filter: "on tour",
-      },
-    },
+      }
+    }
   };
 
   return axios
     .get(`https://cors-anywhere.herokuapp.com/${API_BASE_URL}/search`, data)
-    .then((res) => {
+    .then(res => {
       // we want to get the events and add them to our service
       const { events } = res.data;
       const { artists } = res.data._embedded;
@@ -45,7 +45,9 @@ const getArtistsByLocationAndGenre = () => {
 
       artists.map(getSongsByArtist);
     })
-    .catch((error) => error);
+    .catch(error => {
+      return error;
+    });
 };
 
 export { getArtistsByLocationAndGenre };

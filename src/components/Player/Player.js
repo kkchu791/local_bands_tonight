@@ -8,6 +8,7 @@ import SetterService from "../../models/SetterService";
 // import { getArtistsByLocationAndGenre } from "../../apis/artists.api";
 import { play } from "../../apis/songs.api";
 import { hash } from "../../utils/Constants";
+import PlayerService from "../../models/PlayerService";
 
 export const Player = () => {
   const [currentSong, setCurrentSong] = useState({});
@@ -25,13 +26,16 @@ export const Player = () => {
     }
   }, []);
 
-  const playSong = (song) => {
-    play({
-      playerInstance: window.player || SetterService.get("player"),
-      spotifyURI: song.uri,
+  const playSong = async (uris) => {    
+    let player = await PlayerService.getPlayer({ interval: 1000 }).then((player) =>  {
+      console.log("player attached!", player)
+      play({
+        playerInstance: player,
+        spotifyURIs: uris,
+      });
     });
 
-    setCurrentSong(song);
+    //setCurrentSong(song);
   };
 
   const handleSongDetailsClick = (song) => {

@@ -1,7 +1,7 @@
 const authEndpoint = "https://accounts.spotify.com/authorize";
 const clientId = "";
-// const redirectUri = "https://localbandsintown.surge.sh/stations";
-const redirectUri = "http://localhost:3000/player";
+const redirectUri = "https://localbandsintown.surge.sh/player";
+//const redirectUri = "http://localhost:3000/player";
 const scopes = ["streaming", "user-read-email", "user-read-private"];
 
 export const loginLink = `${authEndpoint}?client_id=${clientId}&redirect_uri=${redirectUri}&scope=${scopes.join(
