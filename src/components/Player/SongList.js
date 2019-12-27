@@ -9,11 +9,25 @@ import SetterService from "../../models/SetterService";
 import getArtistsByLocationAndGenre from "../../apis/artists.api";
 
 const useStyles = makeStyles((theme) => ({
+  songListContainer: {
+    display: "flex",
+    border: "1px solid black",
+    justifyContent: "space-between",
+    flexDirection: "column",
+    height: "100vh",
+  },
   songTitle: {
-    fontSize: "24px",
+    border: "1px solid green",
   },
   songList: {
-    maxHeight: "500px",
+    flex: 3,
+    height: "600px",
+    overflowY: "scroll",
+    border: "1px solid blue",
+  },
+  buttonBar: {
+    flex: 1,
+    border: "1px solid orange",
   },
 }));
 
@@ -32,7 +46,7 @@ export const SongList = ({ playSong, handleSongDetailsClick }) => {
 
     PubSub.subscribe(setSongs);
 
-    playSong(SongService.getAllURIs());
+    //playSong(SongService.getAllURIs());
 
     return () => PubSub.unsubscribe(setSongs);
   }, []);
@@ -46,21 +60,27 @@ export const SongList = ({ playSong, handleSongDetailsClick }) => {
   }, []);
 
   return (
-    <div className={classes.songList}>
-      <Typography variant="h2" className={classes.songTitle}>
-        Songs
-      </Typography>
+    <div className={classes.songListContainer}>
+      <div className={classes.songTitle}>
+        <Typography variant="h4">
+          Songs
+        </Typography>
+      </div>
 
-      {songs.map((song, index) => (
-        <SongCard
-          song={song}
-          key={index}
-          playSong={playSong}
-          handleSongDetailsClick={handleSongDetailsClick}
-        />
-      ))}
+      <div className={classes.songList}>
+        {songs.map((song, index) => (
+          <SongCard
+            song={song}
+            key={index}
+            playSong={playSong}
+            handleSongDetailsClick={handleSongDetailsClick}
+          />
+        ))}
+      </div>
 
-      <ButtonBar currentSong={currentSong} playSong={playSong} />
+      <div className={classes.buttonBar}>
+        <ButtonBar currentSong={currentSong} playSong={playSong} />
+      </div>
     </div>
   );
 };

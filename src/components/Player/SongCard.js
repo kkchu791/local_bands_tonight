@@ -1,68 +1,69 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "@material-ui/core/Card";
-import CardMedia from "@material-ui/core/CardMedia";
-import CardContent from "@material-ui/core/CardContent";
 import Typography from "@material-ui/core/Typography";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
 
 const useStyles = makeStyles(theme => ({
-  card: {
+  songContainer: {
     display: "flex",
-    margin: "30px",
-    textAlign: "left"
+    margin: "10px 0", 
+    border: "1px solid black",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: "100px",
   },
-  cover: {
-    width: 151
-  },
-  details: {
+  songDetailsInfo: {
+    flex: "1",
     display: "flex",
-    flexDirection: "column"
+    flexDirection: "row",
+    flexWrap: "wrap",
+    height: "100%",
+    alignItems: "center",
+    justifyContent: "center",
   },
-  content: {
-    flex: "1 0 auto"
+
+  songInfo: {
+    width: "100%",
   },
-  nextButton: {
-    marginLeft: "auto",
-    order: "2",
-    alignSelf: "center",
-    fontSize: "24px"
-  }
+
+  ticketInfo: {
+    width: "100%",
+  },
+  detailsButton: {
+    height: "100%",
+    alignItems: "center",
+    borderLeft: "1px solid black",
+    justifyContent: "center",
+  },
 }));
 
 export const SongCard = ({ song, index, playSong, handleSongDetailsClick }) => {
   const classes = useStyles();
+  console.log(song, "song")
   return (
-    <Card key={index} onClick={() => playSong(song)} className={classes.card}>
-      <CardMedia
-        className={classes.cover}
-        image={song.album_url}
-        title="song-image"
-      />
-      <div className={classes.details}>
-        <CardContent className={classes.content}>
-          <Typography component="h5" variant="h5">
-            {song.name}
-          </Typography>
-          <Typography variant="subtitle1" color="textSecondary">
-            {song.artist}
-          </Typography>
-        </CardContent>
-      </div>
+    <div
+      key={index}
+      onClick={() => playSong(song)}
+      className={classes.songContainer}
+    >
 
-      <Link
-        to={`/song_details/${song.artist_id}`}
-        onClick={() => handleSongDetailsClick(song)}
-        key={index}
-        song={song}
-      >
-        <div className={classes.nextButton}>
-          <FontAwesomeIcon icon={faChevronRight} aria-hidden="true" />
+      <div className={classes.songDetailsContainer}>
+        <div className={classes.songInfo}>
+          {song.name} • {song.artist}
         </div>
-      </Link>
-    </Card>
+
+        <div className={classes.ticketInfo}>
+          Tickets available from $32
+        </div>
+      </div>
+      
+      <div className={classes.detailsButton}>
+        Details Button
+      </div>
+    </div>
   );
 };
+
 export default SongCard;

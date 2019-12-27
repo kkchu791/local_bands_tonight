@@ -1,16 +1,58 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import Card from "../common/Card";
-import CardSection from "../common/CardSection";
 import { PlayButton } from "./Buttons";
 
 const useStyles = makeStyles(() => ({
-  player: {
+  barContainer: {
     border: "1px solid black",
-    width: "87%",
-    position: "absolute",
-    bottom: "37px",
-    height: "75px",
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: "100px",
+  },
+  imageContainer: {
+    border: "1px solid orange",
+    flexGrow: 1,
+    height: "100%",
+  },
+  image: {
+    border: "1px solid green",
+    height: "100%",
+  },
+  songContainer: {
+    border: "1px solid blue",
+    flexGrow: 2,
+    height: "100%",
+    display: "flex",
+    flexDirection: "row",
+    flexWrap: "wrap",
+    alignItems:"center",
+    justifyContent: "space-around",
+  },
+  songTitle: {
+    border: "1px solid yellow",
+    width: "100%",
+  },
+  artist: {
+    border: "1px solid purple",
+    width: "100%",
+  },
+  playerButtonsContainer: {
+    border: "1px solid red",
+    flexGrow: 1,
+    display: "flex",
+    justifyContent: "space-between",
+    alignItems: "center",
+    height: "100%",
+  },
+  prevButton: {
+    
+  },
+  playButton: {
+    
+  },
+  nextButton: {
+
   },
 }));
 
@@ -18,64 +60,38 @@ export const ButtonBar = ({ currentSong, playSong }) => {
   const classes = useStyles();
 
   return (
-    <div className={classes.player}>
-      <Card>
-        <CardSection>
-          {currentSong ? (
-            <div>
-              <div style={styles.thumbnailContainerStyle}>
-                <img
-                  style={styles.thumbnailStyle}
-                  src={currentSong.album_url}
-                  alt="album"
-                />
-              </div>
+    <div className={classes.barContainer}>
+      <div className={classes.imageContainer}>
+        <img
+          className={classes.image}
+          src="https://loremflickr.com/150/150"
+        />
+      </div>
 
-              <div style={styles.headerContentStyle}>
-                <div style={styles.headerTextStyle}>{currentSong.name}</div>
-                <div className="artist-album">
-                  <span className="artist">
-                    {currentSong.artist}
-                    {" "}
-•
-                  </span>
+      <div className={classes.songContainer}>
+        <div className={classes.songTitle}>
+          Queen and Slim
+        </div>
 
-                  <span className="album">Isolation</span>
-                </div>
-              </div>
+        <div className={classes.artist}>
+          Lena Wraithe
+        </div>
+      </div>
 
-              <div className="player-actions">
-                <PlayButton />
-              </div>
-            </div>
-          ) : (
-            <div>Loading..</div>
-          )}
-        </CardSection>
-      </Card>
+      <div className={classes.playerButtonsContainer}>
+        <div className={classes.prevButton}>
+          Prev
+        </div>
+        <div className={classes.playButton}>
+          Play
+        </div>
+        <div className={classes.nextButton}>
+          Next
+        </div>
+      </div>
     </div>
   );
 };
 
-const styles = {
-  headerContentStyle: {
-    flexDirection: "column",
-    justifyContent: "space-around",
-  },
-  headerTextStyle: {
-    fontSize: "18px",
-    background: "red",
-  },
-  thumbnailStyle: {
-    height: "50px",
-    width: "50px",
-  },
-  thumbnailContainerStyle: {
-    justifyContent: "center",
-    alignItems: "center",
-    marginLeft: "10px",
-    marginRight: "10px",
-  },
-};
 
 export default ButtonBar;
