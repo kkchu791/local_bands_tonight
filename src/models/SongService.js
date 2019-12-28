@@ -26,7 +26,7 @@ class SongService {
   static addSongs(songs, artist_id) {
     songs.forEach(song => storeSongs(song, artist_id));
 
-    PubSub.publishChange(this.getAll());
+    PubSub.publishSongsChange(this.getAll());
   }
 
   static getAll() {

@@ -1,3 +1,10 @@
+import PubSub from './PubSub';
+
+const getSongById = (songId) => {
+  const songs = JSON.parse(sessionStorage.getItem("songs"))
+  return songs[songId];
+}
+
 class PlayerService {
   static get player() {
     return window.player || {};
@@ -17,22 +24,46 @@ class PlayerService {
     });
   }
 
-  static async play() {
-    const currentState = await this.player.getCurrentState();
+  static getState() {
+    return this.player.getCurrentState();
+  }
 
-    if (currentState.paused) {
-      this.player.resume();
+  static async play() {
+    const playerState = await this.getState();
+
+    if (playerState.paused) {
+      this.player.resume();  
     } else {
       this.player.pause();
     }
   }
 
-  static playNext() {
-    this.player.nextTrack();
+  static async getNextTrack() {
+    const playerState = await this.getState();
+    return playerState.track_window.next_tracks[0];
   }
 
-  static playPrevious() {
+  static async playNext() {
+    this.player.nextTrack();
+    const nextTrack = await this.getNextTrack();
+
+    if (!nextTrack) return;
+
+    PubSub.publishSongChange(getSongById(nextTrack.id));
+  }
+
+  static async getPreviousTrack() {
+    const playerState = await this.getState();
+    return playerState.track_window.previous_tracks[0];
+  }
+
+  static async playPrevious() {
     this.player.previousTrack();
+    const previousTrack = await this.getPreviousTrack();
+
+    if (!previousTrack) return;
+
+    PubSub.publishSongChange(getSongById(previousTrack.id));
   }
 }
 

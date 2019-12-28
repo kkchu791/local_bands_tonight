@@ -17,8 +17,12 @@ class PubSub {
     this.subscriptions = _.pull(this.subscriptions, callback);
   }
 
-  static publishChange(action) {
-    this.subscriptions.forEach(cb => cb(action));
+  static publishSongsChange(songs) {
+    this.subscriptions[0](songs);
+  }
+
+  static publishSongChange(song) {
+    this.subscriptions[1](song);
   }
 }
 

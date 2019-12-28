@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import { PlayerButtons } from "./PlayerButtons";
+import _ from 'lodash';
 
 
 const useStyles = makeStyles(() => ({
@@ -65,17 +66,17 @@ export const ButtonBar = ({ currentSong, playSong }) => {
       <div className={classes.imageContainer}>
         <img
           className={classes.image}
-          src="https://loremflickr.com/150/150"
+          src={_.get(currentSong, 'album_url', '')}
         />
       </div>
 
       <div className={classes.songContainer}>
         <div className={classes.songTitle}>
-          Queen and Slim
+          {currentSong.name}
         </div>
 
         <div className={classes.artist}>
-          Lena Wraithe
+          {currentSong.artist}
         </div>
       </div>
 

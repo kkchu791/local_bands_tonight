@@ -4,12 +4,14 @@ import {
   ButtonPlay,
   ButtonNext,
   ButtonPrevious,
+  ButtonPause,
 } from "./Buttons";
+import PlayerService from "../../models/PlayerService";
 
 const useStyles = makeStyles(() => ({
   playerButtonsContainer: {
     border: "1px solid red",
-    flexGrow: 1,
+    width: "150px",
     display: "flex",
     justifyContent: "space-between",
     alignItems: "center",
