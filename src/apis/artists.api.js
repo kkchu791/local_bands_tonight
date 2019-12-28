@@ -19,7 +19,7 @@ const getArtistsByLocationAndGenre = () => {
           {
             type: "event",
             order: "rsvps (desc)",
-            limit: 5
+            limit: 10
           }
         ],
         location: "region",

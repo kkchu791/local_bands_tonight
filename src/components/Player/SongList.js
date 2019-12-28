@@ -45,8 +45,7 @@ export const SongList = ({ playSong, handleSongDetailsClick }) => {
     start();
 
     PubSub.subscribe(setSongs);
-
-    //playSong(SongService.getAllURIs());
+    playSong(SongService.getAllURIs());
 
     return () => PubSub.unsubscribe(setSongs);
   }, []);

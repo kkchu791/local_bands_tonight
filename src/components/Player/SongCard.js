@@ -41,7 +41,6 @@ const useStyles = makeStyles(theme => ({
 
 export const SongCard = ({ song, index, playSong, handleSongDetailsClick }) => {
   const classes = useStyles();
-  console.log(song, "song")
   return (
     <div
       key={index}

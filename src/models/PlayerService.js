@@ -1,11 +1,7 @@
 class PlayerService {
-  // static get player() {
-  //   return this._player || {};
-  // }
-
-  //  static set player() {
-  //   this._player = window.player;
-  // }
+  static get player() {
+    return window.player || {};
+  }
 
   static getPlayer(interval) {
     return new Promise((resolve, reject) => {
@@ -21,21 +17,23 @@ class PlayerService {
     });
   }
 
-  // static playNext() {
-  //   this.player.nextTrack();
-  // }
+  static async play() {
+    const currentState = await this.player.getCurrentState();
 
-  // static playPrevious() {
-  //   this.player.previousTrack();
-  // }
+    if (currentState.paused) {
+      this.player.resume();
+    } else {
+      this.player.pause();
+    }
+  }
 
-  // static pause() {
-  //  this.player.pause(); 
-  // }
+  static playNext() {
+    this.player.nextTrack();
+  }
 
-  // static resume() {
-  //   this.player.resume();
-  // }
+  static playPrevious() {
+    this.player.previousTrack();
+  }
 }
 
 export default PlayerService;

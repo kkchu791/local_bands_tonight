@@ -1,6 +1,7 @@
 import React from "react";
 import { makeStyles } from "@material-ui/core/styles";
-import { PlayButton } from "./Buttons";
+import { PlayerButtons } from "./PlayerButtons";
+
 
 const useStyles = makeStyles(() => ({
   barContainer: {
@@ -78,17 +79,7 @@ export const ButtonBar = ({ currentSong, playSong }) => {
         </div>
       </div>
 
-      <div className={classes.playerButtonsContainer}>
-        <div className={classes.prevButton}>
-          Prev
-        </div>
-        <div className={classes.playButton}>
-          Play
-        </div>
-        <div className={classes.nextButton}>
-          Next
-        </div>
-      </div>
+      <PlayerButtons />
     </div>
   );
 };
