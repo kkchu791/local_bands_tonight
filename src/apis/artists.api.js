@@ -5,7 +5,8 @@ import { getSongsByArtist } from "./songs.api";
 const API_BASE_URL = "https://search.bandsintown.com";
 const bandsInTownApiKey = "";
 
-const getArtistsByLocationAndGenre = () => {
+
+const getArtistsByLocationAndGenre = (coords) => {
   const data = {
     headers: {
       "Content-Type": "application/json",
@@ -19,13 +20,13 @@ const getArtistsByLocationAndGenre = () => {
           {
             type: "event",
             order: "rsvps (desc)",
-            limit: 10
+            limit: 7
           }
         ],
         location: "region",
         region: {
-          latitude: 34.0522,
-          longitude: -118.2437,
+          latitude: coords[0],
+          longitude: coords[1],
           radius: 20
         },
         filter: "on tour",

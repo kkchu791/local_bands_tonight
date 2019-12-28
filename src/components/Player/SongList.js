@@ -1,9 +1,11 @@
+
 import React, { useState, useEffect } from "react";
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import { SongCard } from "./SongCard";
 import { ButtonBar } from "./ButtonBar";
 import SongService from "../../models/SongService";
+import LocationService from "../../models/LocationService";
 import PubSub from "../../models/PubSub";
 import SetterService from "../../models/SetterService";
 import getArtistsByLocationAndGenre from "../../apis/artists.api";
@@ -35,14 +37,17 @@ export const SongList = ({ playSong, handleSongDetailsClick }) => {
   const classes = useStyles();
 
   const [songs, setSongs] = useState(SongService.getAll());
-  const [currentSong, setCurrentSong] = useState(songs[0]);
+  const [currentSong, setCurrentSong] = useState(songs[0] || {});
 
   useEffect(() => {
-    const start = async () => {
-      await getArtistsByLocationAndGenre();
+
+    const getArtistsByLocation = async () => {
+      const coords = await LocationService.getCoordinates();
+
+      await getArtistsByLocationAndGenre(coords);
     };
 
-    start();
+    getArtistsByLocation();
 
     PubSub.subscribe(setSongs);
     PubSub.subscribe(setCurrentSong);
@@ -62,6 +67,10 @@ export const SongList = ({ playSong, handleSongDetailsClick }) => {
     }
   }, []);
 
+  console.log(songs, "songs")
+
+  console.log(currentSong, "currentSong")
+
   return (
     <div className={classes.songListContainer}>
       <div className={classes.songTitle}>
@@ -80,7 +89,6 @@ export const SongList = ({ playSong, handleSongDetailsClick }) => {
           />
         ))}
       </div>
-
       <div className={classes.buttonBar}>
         <ButtonBar currentSong={currentSong} playSong={playSong} />
       </div>
