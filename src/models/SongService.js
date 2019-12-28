@@ -36,6 +36,12 @@ class SongService {
   static getAllURIs() {
     return this.getAll().map(song => song.uri)
   }
+
+  static getURIsBySongId(songId) {
+    const songs = this.getAll();
+    const index = songs.findIndex(song => song.id === songId)
+    return songs.slice(index).map(song => song.uri)
+  }
 }
 
 export default SongService;

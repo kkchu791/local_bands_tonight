@@ -34,8 +34,6 @@ export const Player = () => {
         spotifyURIs: uris,
       });
     });
-
-    //setCurrentSong(song);
   };
 
   const handleSongDetailsClick = (song) => {

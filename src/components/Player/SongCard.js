@@ -4,6 +4,7 @@ import Typography from "@material-ui/core/Typography";
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
 import { faChevronRight } from "@fortawesome/free-solid-svg-icons";
 import { Link } from "react-router-dom";
+import SongService from '../../models/SongService';
 
 const useStyles = makeStyles(theme => ({
   songContainer: {
@@ -39,12 +40,15 @@ const useStyles = makeStyles(theme => ({
   },
 }));
 
-export const SongCard = ({ song, index, playSong, handleSongDetailsClick }) => {
+export const SongCard = ({ song, index, playSong, handleSongDetailsClick, setCurrentSong }) => {
   const classes = useStyles();
   return (
     <div
       key={index}
-      onClick={() => playSong(song)}
+      onClick={() => {
+        playSong(SongService.getURIsBySongId(song.id));
+        setCurrentSong(song);
+      }}
       className={classes.songContainer}
     >
 

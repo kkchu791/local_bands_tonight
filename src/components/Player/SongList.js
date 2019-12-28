@@ -40,18 +40,21 @@ export const SongList = ({ playSong, handleSongDetailsClick }) => {
   const [currentSong, setCurrentSong] = useState(songs[0] || {});
 
   useEffect(() => {
-
     const getArtistsByLocation = async () => {
       const coords = await LocationService.getCoordinates();
 
       await getArtistsByLocationAndGenre(coords);
+
+
+      PubSub.subscribe(setSongs);
+      PubSub.subscribe(setCurrentSong);
+
+      console.log(SongService.getAllURIs(), "SongService.getAllURIs()")
+      playSong(SongService.getAllURIs());
     };
 
     getArtistsByLocation();
 
-    PubSub.subscribe(setSongs);
-    PubSub.subscribe(setCurrentSong);
-    playSong(SongService.getAllURIs());
 
     return () => {
       PubSub.unsubscribe(setSongs);
@@ -66,10 +69,6 @@ export const SongList = ({ playSong, handleSongDetailsClick }) => {
       SetterService.set("deviceId", window.deviceId);
     }
   }, []);
-
-  console.log(songs, "songs")
-
-  console.log(currentSong, "currentSong")
 
   return (
     <div className={classes.songListContainer}>
@@ -86,6 +85,7 @@ export const SongList = ({ playSong, handleSongDetailsClick }) => {
             key={index}
             playSong={playSong}
             handleSongDetailsClick={handleSongDetailsClick}
+            setCurrentSong={setCurrentSong}
           />
         ))}
       </div>
